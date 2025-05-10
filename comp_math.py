@@ -98,11 +98,9 @@ class Propogation:
                     print("String not normalized: Exponent term error starts at point " + unicode_value[1] + " of exponents")
                 return None
             return "normalized"
-    # Relative Error Function: Potential redundancies can be
+    # Relative Error Function (to be added): Potential redundancies can be
     # reduced due to the acceptance of the plethora of potential data types,
     # Something Python is plenty capable of handling due to being an interpreted language
-    #def abs_error(self, form1, form2):
-    #    if form1
     
 # Basic Taylor Expansion print function
 def taylor_exp():
