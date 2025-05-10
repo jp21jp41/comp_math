@@ -67,7 +67,6 @@ class Propogation:
         if float_value == "Default":
             float_value = len(str(number)) - 2
         return self.x_hat(number, base, exponent, float_value, form)
-    ## Boolean functions
     # Function to check the type of a number
     def normalization_type(self, number):
         if isinstance(number, float):
