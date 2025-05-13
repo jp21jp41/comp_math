@@ -9,7 +9,8 @@ class Propogation:
     # Initializer
     def __init__(self):
         # Superscript unicode item dictionary
-        self.superscripts = ({"0" : "\u2070", "1" : "\u00b9", "2" : "\u00b2", "3" : "\u00b3", "4" : "\u2074", "7" : "\u2077"})
+        self.superscripts = ({"0" : "\u2070", "1" : "\u00b9", "2" : "\u00b2", "3" : "\u00b3", "4" : "\u2074", "5" : "\u2075", 
+                              "6" : "\u2076", "7" : "\u2077", "8" : "\u2078", "9" : "\u2079"})
     # Exponential function: Unicode converts a number to its exponent version
     def exponential(self, string_given, string_received = ""):
         string_received += self.superscripts[string_given[0]]
@@ -18,15 +19,21 @@ class Propogation:
         else:
             return self.exponential(self, string_given[1:], string_received)
     # Recursive function to find whether a unicode is in the superscript dictionary
-    def unicode_check(self, string, exp_point = 1, exp_seeker = 0):
+    def unicode_check(self, string, exp_point = 0, exp_seeker = 0, exp_index = 0):
         # Experience seeker increments
         for item in self.superscripts.values():
             if item in string:
+                print(string)
+                if exp_point == 0:
+                    exp_index = string.index(item)
                 if len(string) == 1:
-                    return [True, 1]
+                    return [True, 1, exp_index]
                 else:
                     exp_point += 1
-                    self.unicode_check(string[string.index(item)+ 1:], exp_point, 1)
+                    if exp_point == 1:
+                        return self.unicode_check(string[exp_index:], exp_point, 1, exp_index)
+                    else:
+                        return self.unicode_check(string[1:], exp_point, 1, exp_index)
         if exp_seeker == 1:
             print("Exponent not found.")
         return [False, exp_point, exp_seeker]
@@ -80,8 +87,6 @@ class Propogation:
                 print("ValueError:", ve)
                 print("Substring Not Found: No Multiplication Symbol to Reach")
                 return None
-            except TypeError:
-                return None
             try:
                 normal_in_question = float(normal_in_question)
             except ValueError as ve:
@@ -94,8 +99,19 @@ class Propogation:
             normal_in_question = number[number.index("x") + 1 : ]
             unicode_value = self.unicode_check(str(normal_in_question))
             if not unicode_value[0]:
+                print(unicode_value)
                 if unicode_value[2] == 1:
-                    print("String not normalized: Exponent term error starts at point " + unicode_value[1] + " of exponents")
+                    print("String not normalized: Exponent term error starts at point " + str(unicode_value[1]) + " of exponents")
+                return None
+            base_assumption = normal_in_question[:unicode_value[2]]
+            try:
+                print(int(base_assumption))
+            except ValueError as ve:
+                print("ValueError:", ve)
+                if base_assumption == '':
+                    print("No base found.")
+                else:
+                    print("Base is not sufficient.")
                 return None
             return "normalized"
     # Relative Error Function (to be added): Potential redundancies can be
@@ -122,6 +138,14 @@ taylor_exp()
 
 print("1x\u00b9")
 
+print(test.normalization_type(1))
 print(test.normalization_type("1x\u00b98"))
+
+print(test.normalization_type("1x\u00b9"))
+
+print(test.normalization_type("1x\u00b9\u2077"))
+print(test.normalization_type("1x1\u00b9"))
+print(test.normalization_type("1xb\u00b9"))
+print(test.normalization_type("1x1\u00b9\u2077"))
 
 ## Source: https://climate.ucdavis.edu/AM341.pdf
